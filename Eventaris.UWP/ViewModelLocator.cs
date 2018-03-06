@@ -16,6 +16,8 @@ namespace Eventaris.UWP
 
         public EventsViewModel EventsViewModel { get; }
         public ParticipantsViewModel ParticipantsViewModel { get; }
+        public EventDetailViewModel EventDetailViewModel { get; }
+        public NewEventViewModel NewEventViewModel { get; set; }
 
         public ViewModelLocator()
         {
@@ -24,6 +26,8 @@ namespace Eventaris.UWP
 
             EventsViewModel = new EventsViewModel(_navigationService, _repository);
             ParticipantsViewModel = new ParticipantsViewModel(_navigationService, _repository);
+            EventDetailViewModel = new EventDetailViewModel(_navigationService, _repository);
+            NewEventViewModel = new NewEventViewModel(_navigationService, _repository);
         }
     }
 }

@@ -17,7 +17,10 @@
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Participants" Grid.Column="1" Style="{ThemeResource HeaderTextBlockStyle}" />
+        <StackPanel Orientation="Horizontal" Grid.Column="1" >
+            <TextBlock Text="Event: " Style="{ThemeResource HeaderTextBlockStyle}"></TextBlock>
+            <TextBlock Text="{Binding Path=SelectedEvent.Name}" Style="{ThemeResource HeaderTextBlockStyle}" />
+        </StackPanel>
         <FlipView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Users}">
             <FlipView.ItemTemplate>
                 <DataTemplate>
@@ -26,9 +29,6 @@
                         <TextBlock Text="{Binding Path=FirstName}" Style="{ThemeResource SubtitleTextBlockStyle}" Padding="0,0,0,12"/>
                         <TextBlock Text="LastName" Style="{ThemeResource CaptionTextBlockStyle}"></TextBlock>
                         <TextBlock Text="{Binding Path=LastName}" Style="{ThemeResource SubtitleTextBlockStyle}" Padding="0,0,0,12"/>
-                        <TextBlock Text="Type" Style="{ThemeResource CaptionTextBlockStyle}"></TextBlock>
-                        <TextBlock Text="{Binding Path=Type}" Style="{ThemeResource SubtitleTextBlockStyle}" Padding="0,0,0,12"/>
-                    
                     </StackPanel>
                 </DataTemplate>
             </FlipView.ItemTemplate>

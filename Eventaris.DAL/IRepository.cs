@@ -8,11 +8,15 @@ namespace Eventaris.DAL
 {
     public interface IRepository
     {
-        Event GetEventByUrl(string url);
         IList<Event> GetAllEvents();
-        IList<User> GetAllUsers();
+        Event GetEventById(int eventId);
+        IList<User> GetUsersByEventId(int eventId);
+        bool AddNewEvent(Event newEvent);  
+        bool UpdateEventById(Event updatedEvent);
+        bool DeleteEventById(Event deletedEvent);
 
-        IList<User> GetUsersByEventId(int id);
+
+        IList<User> GetAllUsers();
 
     }
 }

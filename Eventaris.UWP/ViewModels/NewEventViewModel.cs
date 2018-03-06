@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,54 +13,41 @@ using Eventaris.UWP.Utility.Messaging;
 
 namespace Eventaris.UWP.ViewModels
 {
-    public class ParticipantsViewModel :INotifyPropertyChanged
+    public class NewEventViewModel
     {
         private readonly IRepository _repository;
         private readonly INavigationService _navigationService;
 
         public CustomCommand GoBackCommand { get; set; }
+        public CustomCommand SaveChangesCommand { get; set; }
 
-        private Event _selectedEvent;
-
-        public Event SelectedEvent
+        private Event _newEvent;
+        public Event NewEvent
         {
-            get => _selectedEvent;
+            get => _newEvent;
             set
             {
-                _selectedEvent = value;
-                RaisePropertyChanged(nameof(SelectedEvent));
-
-                Users = new ObservableCollection<User>(_repository.GetUsersByEventId(SelectedEvent.Id));
+                _newEvent = value;
+                RaisePropertyChanged(nameof(NewEvent));
             }
         }
 
-        private ObservableCollection<User> _users;
-
-        public ObservableCollection<User> Users
+        public NewEventViewModel(INavigationService navigationService, IRepository repository)
         {
-            get => _users;
-            set
-            {
-                _users = value;
-                RaisePropertyChanged(nameof(Users));
-            }
-        }
-
-        public ParticipantsViewModel(INavigationService navigationService, IRepository repository)
-        {
-            Messenger.Default.Register<ParticipantsMessage>(this, OnEventReceived );
+            Messenger.Default.Register<NewEventMessage>(this, OnNewEventMessageReceived);
 
             _repository = repository;
             _navigationService = navigationService;
 
             GoBackCommand = new CustomCommand(GoBack, null);
+            SaveChangesCommand = new CustomCommand(SaveChanges, null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnEventReceived(ParticipantsMessage message)
+        private void OnNewEventMessageReceived(NewEventMessage message)
         {
-            SelectedEvent = message.Event;
+            NewEvent = message.Event;
         }
 
         private void GoBack(object obj)
@@ -72,6 +58,12 @@ namespace Eventaris.UWP.ViewModels
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SaveChanges(object obj)
+        {
+            _repository.AddNewEvent(NewEvent);
+            GoBack(null);
         }
 
     }

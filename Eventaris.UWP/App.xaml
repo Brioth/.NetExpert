@@ -3,6 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Eventaris.UWP"
+    xmlns:converters="using:Eventaris.UWP.Converters"
     RequestedTheme="Light">
+    
+    <Application.Resources>
+        <ResourceDictionary>
+            <local:ViewModelLocator x:Key="MainViewModelLocator"></local:ViewModelLocator>
+
+            <converters:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"></converters:DateTimeToDateTimeOffsetConverter>
+            <converters:DateTimeToTimeSpanConverter x:Key="DateTimeToTimeSpanConverter"></converters:DateTimeToTimeSpanConverter>
+        </ResourceDictionary>
+    </Application.Resources>
 
 </Application>

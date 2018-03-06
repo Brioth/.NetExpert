@@ -1,90 +1,106 @@
-﻿using System;
+﻿using Eventaris.Domain;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Eventaris.Domain;
-using Newtonsoft.Json;
 
 namespace Eventaris.DAL
 {
     public class ApiRepository : IRepository
     {
-        public Event GetEventByUrl(string url)
-        {
-            using (var _client = new HttpClient())
-            {
-                var response = "";
-                Task task = Task.Run(async () => { response = await _client.GetStringAsync(url); });
-                task.Wait();
-                var mEvent = JsonConvert.DeserializeObject<Event>(response);
-
-                return mEvent;
-            }
-
-
-            //var response = _client.GetAsync(url).Result;
-            //response.EnsureSuccessStatusCode();
-            //var mEvent = response.Content.ReadAsAsync<Event>().Result;
-            //return mEvent;
-        }
+        private static readonly String _allEventsUriString = "https://eventaris.azurewebsites.net/api/events";
+        private static readonly String _allUsersUriString = "https://eventaris.azurewebsites.net/api/users";
+        //private static readonly String _allEventsUriString = "http://localhost:3164/api/events";
+        //private static readonly String _allUsersUriString = "http://localhost:3164/api/users";
 
         public IList<Event> GetAllEvents()
         {
-            using (var _client = new HttpClient())
+            using (var client = new HttpClient())
             {
-                Uri AllEventsUri = new Uri("https://eventaris.azurewebsites.net/api/events");
+                Uri allEventsUri = new Uri(_allEventsUriString);
                 var response = "";
-                Task task = Task.Run(async () => { response = await _client.GetStringAsync(AllEventsUri); });
+                Task task = Task.Run(async () => { response = await client.GetStringAsync(allEventsUri); });
                 task.Wait();
-                var mEvents = JsonConvert.DeserializeObject<List<Event>>(response);
+                var allEvents = JsonConvert.DeserializeObject<List<Event>>(response);
 
-                return mEvents;
+                return allEvents;
             }
+        }
 
-            //MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
-            //_client.DefaultRequestHeaders.Accept.Add(contentType);
+        public Event GetEventById(int eventId)
+        {
+            using (var client = new HttpClient())
+            {
+                Uri specificEventUri = new Uri(String.Concat(_allEventsUriString,"/",eventId));
+                var response = "";
+                Task task = Task.Run(async () => { response = await client.GetStringAsync(specificEventUri); });
+                task.Wait();
+                var requestedEvent = JsonConvert.DeserializeObject<Event>(response);
 
-            //HttpResponseMessage response = _client.GetAsync("/api/events").Result;
-            //string stringData = response.Content.ReadAsStringAsync().Result;
-            //List<Event> data = JsonConvert.DeserializeObject<List<Event>>(stringData);
-            //return data;
+                return requestedEvent;
+            }
+        }
+
+        public IList<User> GetUsersByEventId(int eventId)
+        {
+            using (var client = new HttpClient())
+            {
+                Uri usersByEventUri = new Uri(String.Concat(_allEventsUriString, "/",eventId,"/Users"));
+                var response = "";
+                Task task = Task.Run(async () => { response = await client.GetStringAsync(usersByEventUri); });
+                task.Wait();
+                var requestedUsers = JsonConvert.DeserializeObject<List<User>>(response);
+
+                return requestedUsers;
+            }
+        }
+
+        public bool AddNewEvent(Event newEvent)
+        {
+            using (var client = new HttpClient())
+            {
+                Uri newEventUri = new Uri(_allEventsUriString);
+                var response = client.PostAsJsonAsync(newEventUri, newEvent).Result;
+
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        public bool UpdateEventById(Event updatedEvent)
+        {
+            using (var client = new HttpClient())
+            {
+                Uri updatedEventUri = new Uri(String.Concat(_allEventsUriString, "/", updatedEvent.Id));
+                var response = client.PutAsJsonAsync(updatedEventUri, updatedEvent).Result;
+
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        public bool DeleteEventById(Event deletedEvent)
+        {
+            using (var client = new HttpClient())
+            {
+                Uri deletedUri = new Uri(String.Concat(_allEventsUriString, "/", deletedEvent.Id));
+                var response = client.DeleteAsync(deletedUri).Result;
+
+                return response.IsSuccessStatusCode;
+            }
         }
 
         public IList<User> GetAllUsers()
         {
-            using (var _client = new HttpClient())
+            using (var client = new HttpClient())
             {
-                Uri AllUsersUri = new Uri("https://eventaris.azurewebsites.net/api/users");
+                Uri allUsersUri = new Uri(_allUsersUriString);
                 var response = "";
-                Task task = Task.Run(async () => { response = await _client.GetStringAsync(AllUsersUri); });
+                Task task = Task.Run(async () => { response = await client.GetStringAsync(allUsersUri); });
                 task.Wait();
-                var mUsers = JsonConvert.DeserializeObject<List<User>>(response);
+                var allUsers = JsonConvert.DeserializeObject<List<User>>(response);
 
-                return mUsers;
-
+                return allUsers;
             }
-
-
-        }
-
-        public IList<User> GetUsersByEventId(int id)
-        {
-            using (var _client = new HttpClient())
-            {
-                Uri AllUsersUri = new Uri("https://eventaris.azurewebsites.net/api/users/event/"+id);
-                var response = "";
-                Task task = Task.Run(async () => { response = await _client.GetStringAsync(AllUsersUri); });
-                task.Wait();
-                var mUsers = JsonConvert.DeserializeObject<List<User>>(response);
-
-                return mUsers;
-
-            }
-
-
-        }
-
+        }     
     }
 }

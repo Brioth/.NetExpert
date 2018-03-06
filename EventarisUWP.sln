@@ -5,9 +5,16 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventaris.UWP", "Eventaris.UWP\Eventaris.UWP.csproj", "{C6A51D54-DB91-4366-A914-049FDA2D3FD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventaris.Domain", "Eventaris.Domain\Eventaris.Domain.csproj", "{6481D623-8E54-4E09-9770-F4D809B1376F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventaris.Domain", "Eventaris.Domain\Eventaris.Domain.csproj", "{6481D623-8E54-4E09-9770-F4D809B1376F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventaris.DAL", "Eventaris.DAL\Eventaris.DAL.csproj", "{A198BF2A-6D6D-47F4-8FED-0471DC13ED14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventaris.DAL", "Eventaris.DAL\Eventaris.DAL.csproj", "{A198BF2A-6D6D-47F4-8FED-0471DC13ED14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventarisUWP.Tests", "EventarisUWP.Tests\EventarisUWP.Tests.csproj", "{17AAA55B-8B2F-48D9-96DB-502122153F8B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6481D623-8E54-4E09-9770-F4D809B1376F} = {6481D623-8E54-4E09-9770-F4D809B1376F}
+		{A198BF2A-6D6D-47F4-8FED-0471DC13ED14} = {A198BF2A-6D6D-47F4-8FED-0471DC13ED14}
+		{C6A51D54-DB91-4366-A914-049FDA2D3FD1} = {C6A51D54-DB91-4366-A914-049FDA2D3FD1}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +80,22 @@ Global
 		{A198BF2A-6D6D-47F4-8FED-0471DC13ED14}.Release|x64.Build.0 = Release|Any CPU
 		{A198BF2A-6D6D-47F4-8FED-0471DC13ED14}.Release|x86.ActiveCfg = Release|Any CPU
 		{A198BF2A-6D6D-47F4-8FED-0471DC13ED14}.Release|x86.Build.0 = Release|Any CPU
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|ARM.ActiveCfg = Debug|ARM
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|ARM.Build.0 = Debug|ARM
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|x64.ActiveCfg = Debug|x64
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|x64.Build.0 = Debug|x64
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|x86.ActiveCfg = Debug|x86
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Debug|x86.Build.0 = Debug|x86
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|ARM.ActiveCfg = Release|ARM
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|ARM.Build.0 = Release|ARM
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|x64.ActiveCfg = Release|x64
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|x64.Build.0 = Release|x64
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|x86.ActiveCfg = Release|x86
+		{17AAA55B-8B2F-48D9-96DB-502122153F8B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

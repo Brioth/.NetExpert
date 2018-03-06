@@ -8,7 +8,17 @@ namespace Eventaris.Domain
     public class Event : INotifyPropertyChanged
     {
         public int Id { get; set; }
-        public String Name { get; set; }
+
+        private String _name;
+        public String Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
         public DateTime StartingDateTime { get; set; }
         public DateTime EndingDateTime { get; set; }
         public String Location { get; set; }
@@ -17,8 +27,8 @@ namespace Eventaris.Domain
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //[NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged
+            ([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

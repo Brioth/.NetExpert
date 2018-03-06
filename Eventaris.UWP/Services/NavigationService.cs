@@ -19,6 +19,12 @@ namespace Eventaris.UWP.Services
                 case "Participants":
                     rootFrame.Navigate(typeof(ParticipantsView));
                     break;
+                case "EventDetails":
+                    rootFrame.Navigate(typeof(EventDetailView));
+                    break;
+                case "NewEvent":
+                    rootFrame.Navigate(typeof(NewEventView));
+                    break;
                 case "Back":
                     rootFrame.GoBack();
                     break;

@@ -4,53 +4,56 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Eventaris.UWP"
     xmlns:vm="using:Eventaris.UWP.ViewModels"
-    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Interactivity:Interaction.Behaviors>
-        <Interactions:EventTriggerBehavior EventName="Loaded">
-            <Interactions:InvokeCommandAction Command="{Binding LoadCommand}"/>
-        </Interactions:EventTriggerBehavior>
-    </Interactivity:Interaction.Behaviors>
+    <interactivity:Interaction.Behaviors>
+        <interactions:EventTriggerBehavior EventName="Loaded">
+            <interactions:InvokeCommandAction Command="{Binding LoadCommand}"/>
+        </interactions:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" x:Name="leftColumnDefinitionOfOuterGrid"/>
+            <ColumnDefinition Width="20" x:Name="LeftColumDefinitionOfOuterGrid"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Style="{ThemeResource HeaderTextBlockStyle}"
-                   Text="{Binding SelectedEvent.Name, Mode=OneWay}"
-                   Grid.Column="2"/>
-        <ListView x:Name="eventsListView"
-                  ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}"
-                  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                  Padding="0,0,8,0">
+
+        <Button Margin="8" Grid.Row="0" Grid.Column="1" Command="{Binding NewEventCommand}" Content="New Event" HorizontalAlignment="Left" />
+        <ListView x:Name="EventsListView"
+                      ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}" 
+                      Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Padding="0,0,8,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                                   Foreground="Blue"
-                                   Text="{Binding Path=Name}"/>
+                                    Text="{Binding Path=Name}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <RelativePanel Grid.Row="1" Grid.Column="2" Margin="0,8,0,8">
-            <Grid x:Name="detailsGrid" Margin="8">
+
+        <RelativePanel x:Name="MyPanel" Grid.Row="2" Grid.Column="2" Margin="0,8,0,8">
+            <Image x:Name="QrImage" Source="{Binding QrCode}" MinWidth="50" MinHeight="50" />
+            <Grid x:Name="MyDetailsGrid" Margin="8">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock Style="{ThemeResource HeaderTextBlockStyle}"
+                       Text="{Binding SelectedEvent.Name, Mode=OneWay}"/>
                     <TextBlock Text="Start Date" Style="{ThemeResource CaptionTextBlockStyle}"></TextBlock>
                     <TextBlock Text="{Binding SelectedEvent.StartingDateTime}" 
-                               Style="{ThemeResource SubtitleTextBlockStyle}" Padding="0,0,0,12"/>
+                       Style="{ThemeResource SubtitleTextBlockStyle}" Padding="0,0,0,12"/>
                     <TextBlock Text="End Date" Style="{ThemeResource CaptionTextBlockStyle}"></TextBlock>
                     <TextBlock Text="{Binding SelectedEvent.EndingDateTime}" Style="{ThemeResource SubtitleTextBlockStyle}" Padding="0,0,0,12"/>
                     <TextBlock Text="Location" Style="{ThemeResource CaptionTextBlockStyle}"></TextBlock>
@@ -59,11 +62,37 @@
                     <TextBlock Text="{Binding SelectedEvent.Description}" Style="{ThemeResource SubtitleTextBlockStyle}" Padding="0,0,0,12"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
-                    
-                   
-                    <Button Command="{Binding ShowParticipantsCommand}" Content="Show Participants" Margin="8,0,0,0"/>
+                    <Button Width="auto" Margin ="0,0,0,0" Command="{Binding ShowParticipantsCommand}" Content="Show Participants"/>
+                    <Button Width="auto" Margin="8,0,0,0" Content="Edit" Command="{Binding EditEventCommand}"/>
+                    <Button Width="auto" Margin="8,0,0,0" Content="Remove" Command="{Binding RemoveEventCommand}"/>
                 </StackPanel>
             </Grid>
         </RelativePanel>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Landscape">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="MyDetailsGrid.Background" Value="Yellow"></Setter>-->
+                        <Setter Target="QrImage.(RelativePanel.RightOf)" Value="MyDetailsGrid"></Setter>
+                        <Setter Target="QrImage.(RelativePanel.AlignTopWith)" Value="MyDetailsGrid"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Portrait">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="MyDetailsGrid.Background" Value="Green"></Setter>-->
+                        <Setter Target="MyDetailsGrid.(RelativePanel.Below)" Value="QrImage"></Setter>
+                        <Setter Target="MyDetailsGrid.(RelativePanel.AlignLeftWith)" Value="QrImage"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>
+
