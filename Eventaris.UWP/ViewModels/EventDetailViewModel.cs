@@ -27,8 +27,11 @@ namespace Eventaris.UWP.ViewModels
             get => _detailEvent;
             set
             {
-                _detailEvent = value;
-                RaisePropertyChanged(nameof(DetailEvent));
+                if (value != null)
+                {
+                    _detailEvent = value;
+                    RaisePropertyChanged(nameof(DetailEvent));
+                }                
             }
         }
 

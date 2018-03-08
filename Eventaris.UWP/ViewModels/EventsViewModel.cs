@@ -53,9 +53,12 @@ namespace Eventaris.UWP.ViewModels
             get => _selectedEvent;
             set
             {
-                _selectedEvent = value;
-                RaisePropertyChanged(nameof(SelectedEvent));
-                SetQrCode(value.Id.ToString());
+                if (value != null)
+                {
+                    _selectedEvent = value;
+                    RaisePropertyChanged(nameof(SelectedEvent));
+                    SetQrCode(value.Id.ToString());
+                }               
             }
         }
 
